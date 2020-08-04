@@ -1,11 +1,12 @@
 ---
-title: Windows Service Deployment
+title: Windows服务部署
 hasparent: true
 ---
 
-In Windows environments, Jaeger processes can be hosted and managed as Windows services controlled via the `sc` utility.  To configure such services on Windows, download [nssm.exe](https://nssm.cc/download) for the appropriate architecture, and issue commands similar to how Jaeger is typically run.  The example below showcases a basic Elasticsearch setup, configured using both environment variables and process arguments.
+In Windows environments, Jaeger processes can be hosted and managed as Windows services controlled via the `sc` utility. To configure such services on Windows, download [nssm.exe](https://nssm.cc/download) for the appropriate architecture, and issue commands similar to how Jaeger is typically run. The example below showcases a basic Elasticsearch setup, configured using both environment variables and process arguments.
 
 ## Agent
+
 ```bat
 nssm install JaegerAgent C:\Jaeger\jaeger-agent.exe --reporter.grpc.host-port=localhost:14250
 
@@ -17,6 +18,7 @@ nssm start JaegerAgent
 ```
 
 ## Collector
+
 ```bat
 nssm install JaegerCollector C:\Jaeger\jaeger-collector.exe --es.server-urls=http://localhost:9200 --es.username=jaeger --es.password=PASSWORD
 
@@ -29,6 +31,7 @@ nssm start JaegerCollector
 ```
 
 ## Query UI
+
 ```bat
 nssm install JaegerUI C:\Jaeger\jaeger-query.exe --es.server-urls=http://localhost:9200 --es.username=jaeger --es.password=PASSWORD
 

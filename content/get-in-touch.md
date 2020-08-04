@@ -1,5 +1,5 @@
 ---
-title: Getting in touch
+title: 取得联系
 ---
 
 ## Via chat or email
@@ -14,8 +14,8 @@ The Jaeger maintainers and contributors meet on a video call every other week, a
 
 Our GitHub org has many different repos, please make sure to pick the one appropriate for your issue.
 
-* For general backend features or issues use the main repo [github.com/jaegertracing/jaeger](https://github.com/jaegertracing/jaeger).
-* For frontend features or issues use [github.com/jaegertracing/jaeger-ui](https://github.com/jaegertracing/jaeger-ui).
-* For features or issues with client libraries, pick the [corresponding repository](/docs/latest/client-libraries/#supported-libraries).
+- For general backend features or issues use the main repo [github.com/jaegertracing/jaeger](https://github.com/jaegertracing/jaeger).
+- For frontend features or issues use [github.com/jaegertracing/jaeger-ui](https://github.com/jaegertracing/jaeger-ui).
+- For features or issues with client libraries, pick the [corresponding repository](/docs/latest/client-libraries/#supported-libraries).
 
 [bi-weekly-call]: https://docs.google.com/document/d/1ZuBAwTJvQN7xkWVvEFXj5WU9_JmS5TPiNbxCJSvPqX0/

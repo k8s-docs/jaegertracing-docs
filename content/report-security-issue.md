@@ -1,14 +1,14 @@
 ---
-title: Report a security issue
+title: 报告安全问题
 ---
 
 If you find something suspicious and want to report it, we'd really appreciate!
 
 ## Ways to report
 
-* Contact us on our open chat room on [Gitter][gitter-room]
-* Send a message to [jaeger-tracing@googlegroups.com][mailing-list]. Ideally, encrypt it using our [published key][published-key], which should match the one shown below.
-* Merge request on GitHub: if you can, fork the affected repository and send us a pull request. We really prefer if you'd talk to us before, though, as our repositories are public and we would like to give a heads up to our users before disclosing it publicly.
+- Contact us on our open chat room on [Gitter][gitter-room]
+- Send a message to [jaeger-tracing@googlegroups.com][mailing-list]. Ideally, encrypt it using our [published key][published-key], which should match the one shown below.
+- Merge request on GitHub: if you can, fork the affected repository and send us a pull request. We really prefer if you'd talk to us before, though, as our repositories are public and we would like to give a heads up to our users before disclosing it publicly.
 
 ## Our PGP key
 
@@ -16,11 +16,11 @@ No matter what channel you choose to communicate with us, feel free to encrypt y
 
 1. Receive our keys from the key server:
 
-    `gpg --keyserver sks-keyservers.net --recv-keys C043A4D2B3F2AC31`
+   `gpg --keyserver sks-keyservers.net --recv-keys C043A4D2B3F2AC31`
 
 1. Encrypt a "message.txt" file into "message.txt.asc":
 
-    `gpg -ea -r C043A4D2B3F2AC31 message.txt`
+   `gpg -ea -r C043A4D2B3F2AC31 message.txt`
 
 1. Send us the resulting "message.txt.asc"
 

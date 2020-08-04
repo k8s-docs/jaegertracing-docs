@@ -1,14 +1,14 @@
 ---
-title: Getting Started
-description: Get up and running with Jaeger in your local environment
+title: 入门
+description: 在您的本地环境启动和运行 Jaeger
 weight: 2
 ---
 
-## Instrumentation
+## 仪表
 
 Your applications must be instrumented before they can send tracing data to Jaeger backend. Check the [Client Libraries](../client-libraries) section for information about how to use the OpenTracing API and how to initialize and configure Jaeger tracers.
 
-## All in One
+## 一体
 
 All-in-one is an executable designed for quick local testing, launches the Jaeger UI, collector, query, and agent, with an in memory storage component.
 
@@ -38,56 +38,55 @@ You can then navigate to `http://localhost:16686` to access the Jaeger UI.
 
 The container exposes the following ports:
 
-Port  | Protocol | Component | Function
------ | -------  | --------- | ---
-5775  | UDP      | agent     | accept `zipkin.thrift` over compact thrift protocol (deprecated, used by legacy clients only)
-6831  | UDP      | agent     | accept `jaeger.thrift` over compact thrift protocol
-6832  | UDP      | agent     | accept `jaeger.thrift` over binary thrift protocol
-5778  | HTTP     | agent     | serve configs
-16686 | HTTP     | query     | serve frontend
-14268 | HTTP     | collector | accept `jaeger.thrift` directly from clients
-14250 | HTTP     | collector | accept `model.proto`
-9411  | HTTP     | collector | Zipkin compatible endpoint (optional)
-
+| Port  | Protocol | Component | Function                                                                                      |
+| ----- | -------- | --------- | --------------------------------------------------------------------------------------------- |
+| 5775  | UDP      | agent     | accept `zipkin.thrift` over compact thrift protocol (deprecated, used by legacy clients only) |
+| 6831  | UDP      | agent     | accept `jaeger.thrift` over compact thrift protocol                                           |
+| 6832  | UDP      | agent     | accept `jaeger.thrift` over binary thrift protocol                                            |
+| 5778  | HTTP     | agent     | serve configs                                                                                 |
+| 16686 | HTTP     | query     | serve frontend                                                                                |
+| 14268 | HTTP     | collector | accept `jaeger.thrift` directly from clients                                                  |
+| 14250 | HTTP     | collector | accept `model.proto`                                                                          |
+| 9411  | HTTP     | collector | Zipkin compatible endpoint (optional)                                                         |
 
 ## Kubernetes and OpenShift
 
-* Kubernetes templates: https://github.com/jaegertracing/jaeger-kubernetes
-* Kubernetes Operator: https://github.com/jaegertracing/jaeger-operator
-* OpenShift templates: https://github.com/jaegertracing/jaeger-openshift
+- Kubernetes templates: https://github.com/jaegertracing/jaeger-kubernetes
+- Kubernetes Operator: https://github.com/jaegertracing/jaeger-operator
+- OpenShift templates: https://github.com/jaegertracing/jaeger-openshift
 
-## Sample App: HotROD
+## 示例应用程序: HotROD
 
-HotROD (Rides on Demand)  is a demo application that consists of several microservices and
+HotROD (Rides on Demand) is a demo application that consists of several microservices and
 illustrates the use of the [OpenTracing API](http://opentracing.io).
 A tutorial / walkthrough is available in the blog post:
 [Take OpenTracing for a HotROD ride][hotrod-tutorial].
 
 It can be run standalone, but requires Jaeger backend to view the traces.
 
-### Features
+### 特征
 
--   Discover architecture of the whole system via data-driven dependency
-    diagram.
--   View request timeline and errors; understand how the app works.
--   Find sources of latency and lack of concurrency.
--   Highly contextualized logging.
--   Use baggage propagation to:
+- Discover architecture of the whole system via data-driven dependency
+  diagram.
+- View request timeline and errors; understand how the app works.
+- Find sources of latency and lack of concurrency.
+- Highly contextualized logging.
+- Use baggage propagation to:
 
-    -   Diagnose inter-request contention (queueing).
-    -   Attribute time spent in a service.
+  - Diagnose inter-request contention (queueing).
+  - Attribute time spent in a service.
 
--   Use open source libraries with OpenTracing integration to get
-    vendor-neutral instrumentation for free.
+- Use open source libraries with OpenTracing integration to get
+  vendor-neutral instrumentation for free.
 
-### Prerequisites
+### 先决条件
 
--   You need Go 1.11 or higher installed on your machine to run from source.
--   Requires a [running Jaeger backend](#all-in-one) to view the traces.
+- You need Go 1.11 or higher installed on your machine to run from source.
+- Requires a [running Jaeger backend](#all-in-one) to view the traces.
 
-### Running
+### 运行
 
-#### From Source
+#### 从源代码
 
 ```bash
 mkdir -p $GOPATH/src/github.com/jaegertracing
@@ -97,7 +96,8 @@ cd jaeger
 make install
 go run ./examples/hotrod/main.go all
 ```
-#### From docker
+
+#### 从 docker
 
 ```bash
 $ docker run --rm -it \
@@ -108,17 +108,17 @@ $ docker run --rm -it \
   all
 ```
 
-#### From binary distribution
+#### 从二进制分发
 
 Run `example-hotrod(.exe)` executable from the [binary distribution archives][download]:
+
 ```bash
 $ example-hotrod all
 ```
 
 Then navigate to `http://localhost:8080`.
 
-
-## Migrating from Zipkin
+## 从 Zipkin 迁移
 
 Collector service exposes Zipkin compatible REST API `/api/v1/spans` which accepts both Thrift and JSON. Also there is `/api/v2/spans` for JSON and Proto.
 By default it's disabled. It can be enabled with `--collector.zipkin.http-port=9411`.

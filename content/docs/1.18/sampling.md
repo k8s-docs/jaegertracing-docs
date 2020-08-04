@@ -1,5 +1,5 @@
 ---
-title: Sampling
+title: 采样
 hasparent: true
 ---
 
@@ -9,17 +9,17 @@ Jaeger libraries implement consistent upfront (or head-based) sampling. For exam
 
 When using configuration object to instantiate the tracer, the type of sampling can be selected via `sampler.type` and `sampler.param` properties. Jaeger libraries support the following samplers:
 
-* **Constant** (`sampler.type=const`) sampler always makes the same decision for all traces. It either samples all traces (`sampler.param=1`) or none of them (`sampler.param=0`).
-* **Probabilistic** (`sampler.type=probabilistic`) sampler makes a random sampling decision with the probability of sampling equal to the value of `sampler.param` property. For example, with `sampler.param=0.1` approximately 1 in 10 traces will be sampled.
-* **Rate Limiting** (`sampler.type=ratelimiting`) sampler uses a leaky bucket rate limiter to ensure that traces are sampled with a certain constant rate. For example, when `sampler.param=2.0` it will sample requests with the rate of 2 traces per second.
-* **Remote** (`sampler.type=remote`, which is also the default) sampler consults Jaeger agent for the appropriate sampling strategy to use in the current service. This allows controlling the sampling strategies in the services from a [central configuration](#collector-sampling-configuration) in Jaeger backend, or even dynamically (see [Adaptive Sampling](https://github.com/jaegertracing/jaeger/issues/365)).
+- **Constant** (`sampler.type=const`) sampler always makes the same decision for all traces. It either samples all traces (`sampler.param=1`) or none of them (`sampler.param=0`).
+- **Probabilistic** (`sampler.type=probabilistic`) sampler makes a random sampling decision with the probability of sampling equal to the value of `sampler.param` property. For example, with `sampler.param=0.1` approximately 1 in 10 traces will be sampled.
+- **Rate Limiting** (`sampler.type=ratelimiting`) sampler uses a leaky bucket rate limiter to ensure that traces are sampled with a certain constant rate. For example, when `sampler.param=2.0` it will sample requests with the rate of 2 traces per second.
+- **Remote** (`sampler.type=remote`, which is also the default) sampler consults Jaeger agent for the appropriate sampling strategy to use in the current service. This allows controlling the sampling strategies in the services from a [central configuration](#collector-sampling-configuration) in Jaeger backend, or even dynamically (see [Adaptive Sampling](https://github.com/jaegertracing/jaeger/issues/365)).
 
 ### Adaptive Sampler
 
 Adaptive sampler is a composite sampler that combines two functions:
 
-  * It makes sampling decisions on a per-operation basis, i.e. based on {{< tip "span" >}} operation name. This is especially useful in the API services whose endpoints may have very different traffic volumes and using a single probabilistic sampler for the whole service might starve (never sample) some of the low QPS endpoints.
-  * It supports a minimum guaranteed rate of sampling, such as always allowing up to N {{< tip "traces" "trace" >}} per seconds and then sampling anything above that with a certain probability (everything is per-operation, not per-service).
+- It makes sampling decisions on a per-operation basis, i.e. based on {{< tip "span" >}} operation name. This is especially useful in the API services whose endpoints may have very different traffic volumes and using a single probabilistic sampler for the whole service might starve (never sample) some of the low QPS endpoints.
+- It supports a minimum guaranteed rate of sampling, such as always allowing up to N {{< tip "traces" "trace" >}} per seconds and then sampling anything above that with a certain probability (everything is per-operation, not per-service).
 
 Per-operation parameters can be configured statically or pulled periodically from Jaeger backend with the help of Remote sampler. Adaptive sampler is designed to work with the upcoming [Adaptive Sampling](https://github.com/jaegertracing/jaeger/issues/365) feature of the Jaeger backend.
 
@@ -30,6 +30,7 @@ Collectors can be instantiated with static sampling strategies (which are propag
 If no configuration is provided, the collectors will return the default probabilistic sampling policy with probability 0.001 (0.1%) for all services.
 
 Example `strategies.json`:
+
 ```json
 {
   "service_strategies": [
@@ -79,7 +80,7 @@ Example `strategies.json`:
 
 In the above example:
 
-* All operations of service `foo` are sampled with probability 0.8 except for operations `op1` and `op2` which are probabilistically sampled with probabilities 0.2 and 0.4 respectively.
-* All operations for service `bar` are rate-limited at 5 traces per second.
-* Any other service will be sampled with probability 0.5 defined by the `default_strategy`.
-* The `default_strategy` also includes shared per-operation strategies. In this example we disable tracing on `/health` and `/metrics` endpoints for all services by using probability 0. These per-operation strategies will apply to any new service not listed in the config, as well as to the `foo` and `bar` services unless they define their own strategies for these two operations.
+- All operations of service `foo` are sampled with probability 0.8 except for operations `op1` and `op2` which are probabilistically sampled with probabilities 0.2 and 0.4 respectively.
+- All operations for service `bar` are rate-limited at 5 traces per second.
+- Any other service will be sampled with probability 0.5 defined by the `default_strategy`.
+- The `default_strategy` also includes shared per-operation strategies. In this example we disable tracing on `/health` and `/metrics` endpoints for all services by using probability 0. These per-operation strategies will apply to any new service not listed in the config, as well as to the `foo` and `bar` services unless they define their own strategies for these two operations.

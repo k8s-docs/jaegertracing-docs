@@ -1,5 +1,5 @@
 ---
-title: Performance Tuning Guide
+title: 性能优化指南
 description: Tweaking your Jaeger instance to achieve a better performance
 weight: 10
 ---

@@ -1,15 +1,15 @@
 ---
-title: Features
+title: 特征
 hasparent: true
 ---
 
 Jaeger is used for monitoring and troubleshooting microservices-based distributed systems, including:
 
-* Distributed context propagation
-* Distributed transaction monitoring
-* Root cause analysis
-* Service dependency analysis
-* Performance / latency optimization
+- Distributed context propagation
+- Distributed transaction monitoring
+- Root cause analysis
+- Service dependency analysis
+- Performance / latency optimization
 
 ## High Scalability
 
@@ -20,9 +20,9 @@ For example, any given Jaeger installation at Uber is typically processing sever
 
 Jaeger backend, Web UI, and instrumentation libraries have been designed from ground up to support the OpenTracing standard.
 
-* Represent {{< tip "traces" "trace" >}} as {{< tip "directed acyclic graphs" "directed acyclic graph" >}} (not just trees) via [span references](https://github.com/opentracing/specification/blob/master/specification.md#references-between-spans)
-* Support strongly typed span _tags_ and _structured logs_
-* Support general distributed context propagation mechanism via _baggage_
+- Represent {{< tip "traces" "trace" >}} as {{< tip "directed acyclic graphs" "directed acyclic graph" >}} (not just trees) via [span references](https://github.com/opentracing/specification/blob/master/specification.md#references-between-spans)
+- Support strongly typed span _tags_ and _structured logs_
+- Support general distributed context propagation mechanism via _baggage_
 
 ## Multiple storage backends
 

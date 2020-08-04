@@ -1,6 +1,6 @@
 ---
-title: Monitoring Jaeger
-navtitle: Monitoring
+title: 监控 Jaeger
+navtitle: 监控
 weight: 8
 ---
 
@@ -10,19 +10,19 @@ Jaeger itself is a distributed, microservices based system. If you run it in pro
 
 By default Jaeger microservices expose metrics in Prometheus format. It is controlled by the following command line options:
 
-* `--admin-http-port` the port number where the HTTP admin server is running
-* `--metrics-backend` controls how the measurements are exposed. The default value is `prometheus`, another option is `expvar`, the Go standard mechanism for exposing process level statistics.
-* `--metrics-http-route` specifies the name of the HTTP endpoint used to scrape the metrics (`/metrics` by default).
+- `--admin-http-port` the port number where the HTTP admin server is running
+- `--metrics-backend` controls how the measurements are exposed. The default value is `prometheus`, another option is `expvar`, the Go standard mechanism for exposing process level statistics.
+- `--metrics-http-route` specifies the name of the HTTP endpoint used to scrape the metrics (`/metrics` by default).
 
 Each Jaeger component exposes the metrics scraping endpoint on the admin port:
 
-Component             | Port
---------------------- | ---
-**jaeger-agent**      | 14271
-**jaeger-collector**  | 14269
-**jaeger-query**      | 16687
-**jaeger-ingester**   | 14270
-**all-in-one**        | 14269
+| Component            | Port  |
+| -------------------- | ----- |
+| **jaeger-agent**     | 14271 |
+| **jaeger-collector** | 14269 |
+| **jaeger-query**     | 16687 |
+| **jaeger-ingester**  | 14270 |
+| **all-in-one**       | 14269 |
 
 ### Prometheus monitoring mixin for Jaeger
 
@@ -33,7 +33,14 @@ The Prometheus monitoring mixin for Jaeger provides a starting point for people 
 Jaeger components only log to standard out, using structured logging library [go.uber.org/zap](https://github.com/uber-go/zap) configured to write log lines as JSON encoded strings, for example:
 
 ```json
-{"level":"info","ts":1517621222.261759,"caller":"healthcheck/handler.go:99","msg":"Health Check server started","http-port":14269,"status":"unavailable"}
+{
+  "level": "info",
+  "ts": 1517621222.261759,
+  "caller": "healthcheck/handler.go:99",
+  "msg": "Health Check server started",
+  "http-port": 14269,
+  "status": "unavailable"
+}
 ```
 
 The log level can be adjusted via `--log-level` command line switch; default level is `info`.

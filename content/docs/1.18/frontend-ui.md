@@ -1,5 +1,5 @@
 ---
-title: Frontend/UI Configuration
+title: Frontend/UI 配置
 navtitle: Frontend/UI
 hasparent: true
 weight: 7
@@ -9,11 +9,11 @@ weight: 7
 
 Several aspects of the UI can be configured:
 
-  * The Dependencies section can be enabled / configured
-  * Google Analytics tracking can be enabled / configured
-  * Additional menu options can be added to the global nav
-  * Search input limits can be configured
-  
+- The Dependencies section can be enabled / configured
+- Google Analytics tracking can be enabled / configured
+- Additional menu options can be added to the global nav
+- Search input limits can be configured
+
 These options can be configured by a JSON configuration file. The `--query.ui-config` command line parameter of the query service must then be set to the path to the JSON file when the query service is started.
 
 An example configuration file:
@@ -51,12 +51,14 @@ An example configuration file:
     },
     "maxLimit": 1500
   },
-  "linkPatterns": [{
-    "type": "process",
-    "key": "jaeger.version",
-    "url": "https://github.com/jaegertracing/jaeger-client-java/releases/tag/#{jaeger.version}",
-    "text": "Information about Jaeger release #{jaeger.version}"
-  }]
+  "linkPatterns": [
+    {
+      "type": "process",
+      "key": "jaeger.version",
+      "url": "https://github.com/jaegertracing/jaeger-client-java/releases/tag/#{jaeger.version}",
+      "text": "Information about Jaeger release #{jaeger.version}"
+    }
+  ]
 }
 ```
 
@@ -94,7 +96,7 @@ Links can either be members of the `menu` Array, directly, or they can be groupe
 ```json
 {
   "label": "Dropdown button",
-  "items": [ ]
+  "items": []
 }
 ```
 
@@ -106,23 +108,23 @@ The `search.maxLimit` configures the maximum results that the input let you sear
 
 The `search.maxLookback` configures the maximum time before the present users can query for traces. The options in the Lookback dropdown greater than this value will not be shown.
 
-Field | Description
-------|------------
-label | The text displayed in the search form dropdown
-value | The value submitted in the search query if the label is selected
+| Field | Description                                                      |
+| ----- | ---------------------------------------------------------------- |
+| label | The text displayed in the search form dropdown                   |
+| value | The value submitted in the search query if the label is selected |
 
 ### Link Patterns
 
 The `linkPatterns` node can be used to create links from fields displayed in the Jaeger UI.
 
-Field | Description
-------|------------
-type  | The metadata section in which your link will be added: process, tags, logs, traces
-key   | The name of tag/process/log attribute which value will be displayed as a link, this field is not necessary for type `traces`.
-url   | The URL where the link should point to, it can be an external site or relative path in Jaeger UI
-text  | The text displayed in the tooltip for the link
+| Field | Description                                                                                                                   |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------- |
+| type  | The metadata section in which your link will be added: process, tags, logs, traces                                            |
+| key   | The name of tag/process/log attribute which value will be displayed as a link, this field is not necessary for type `traces`. |
+| url   | The URL where the link should point to, it can be an external site or relative path in Jaeger UI                              |
+| text  | The text displayed in the tooltip for the link                                                                                |
 
-Both `url` and `text` can be defined as templates (i.e. using `#{field-name}`) where Jaeger UI will dynamically substitute values based on tags/logs/traces data. 
+Both `url` and `text` can be defined as templates (i.e. using `#{field-name}`) where Jaeger UI will dynamically substitute values based on tags/logs/traces data.
 
 For traces, the supported template fields are: `duration`, `endTime`, `startTime`, `traceName` and `traceID`.
 
@@ -144,8 +146,8 @@ Further, each page supported has an <img src="/img/frontend-ui/embed-open-icon.p
 
 The following pages support embedded mode:
 
-* Search Page
-* Trace Page
+- Search Page
+- Trace Page
 
 ### Search Page
 
@@ -171,7 +173,7 @@ http://localhost:16686/search?
 
 The following query parameter can be used to configure the layout of the search page :
 
-* `uiSearchHideGraph=1` - disables the display of the scatter plot above the search results
+- `uiSearchHideGraph=1` - disables the display of the scatter plot above the search results
 
 ```
 http://localhost:16686/search?
@@ -190,7 +192,6 @@ http://localhost:16686/search?
 
 ### Trace Page
 
-
 To integrate the Trace Page to our application we have to indicate to the Jaeger UI that we want to use the embed mode with `uiEmbed=v0`.
 
 For example:
@@ -198,6 +199,7 @@ For example:
 ```sh
 http://localhost:16686/trace/{trace-id}?uiEmbed=v0
 ```
+
 ![Embed Trace view](/img/frontend-ui/embed-trace-view.png)
 
 If we have navigated to this view from the search traces page we'll have a button to go back to the results page.
@@ -208,38 +210,43 @@ If we have navigated to this view from the search traces page we'll have a butto
 
 The following query parameters can be used to configure the layout of the trace page :
 
-* `uiTimelineCollapseTitle=1` causes the trace header to start out collapsed, which hides the summary and the minimap.
+- `uiTimelineCollapseTitle=1` causes the trace header to start out collapsed, which hides the summary and the minimap.
 
 ```
 http://localhost:16686/trace/{trace-id}?
     uiEmbed=v0&
     uiTimelineCollapseTitle=1
 ```
+
 ![Embed Trace view](/img/frontend-ui/embed-trace-view-with-collapse.png)
 
-* `uiTimelineHideMinimap=1` removes the minimap, entirely, regardless of whether the trace header is expanded or not.
+- `uiTimelineHideMinimap=1` removes the minimap, entirely, regardless of whether the trace header is expanded or not.
 
 ```
 http://localhost:16686/trace/{trace-id}?
     uiEmbed=v0&
     uiTimelineHideMinimap=1
 ```
+
 ![Embed Trace view](/img/frontend-ui/embed-trace-view-with-hide-minimap.png)
 
-* `uiTimelineHideSummary=1` - removes the trace summary information (number of services, etc.) entirely, regardless of whether the trace header is expanded or not.
+- `uiTimelineHideSummary=1` - removes the trace summary information (number of services, etc.) entirely, regardless of whether the trace header is expanded or not.
 
 ```
 http://localhost:16686/trace/{trace-id}?
     uiEmbed=v0&
     uiTimelineHideSummary=1
 ```
+
 ![Embed Trace view](/img/frontend-ui/embed-trace-view-with-hide-summary.png)
 
 We can also combine the options:
+
 ```
 http://localhost:16686/trace/{trace-id}?
     uiEmbed=v0&
     uiTimelineHideMinimap=1&
     uiTimelineHideSummary=1
 ```
+
 ![Embed Trace view](/img/frontend-ui/embed-trace-view-with-hide-details-and-hide-minimap.png)

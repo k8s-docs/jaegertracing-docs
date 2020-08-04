@@ -1,11 +1,11 @@
 ---
-title: Operator for Kubernetes
+title: Kubernetes的运营商
 hasparent: true
 ---
 
 # Understanding Operators
 
-The Jaeger Operator is an implementation of a [Kubernetes Operator](https://coreos.com/operators/).  Operators are pieces of software that ease the operational complexity of running another piece of software. More technically, _Operators_ are a method of packaging, deploying, and managing a Kubernetes application.
+The Jaeger Operator is an implementation of a [Kubernetes Operator](https://coreos.com/operators/). Operators are pieces of software that ease the operational complexity of running another piece of software. More technically, _Operators_ are a method of packaging, deploying, and managing a Kubernetes application.
 
 A Kubernetes application is an application that is both deployed on Kubernetes and managed using the Kubernetes APIs and `kubectl` (kubernetes) or `oc` (OKD) tooling. To be able to make the most of Kubernetes, you need a set of cohesive APIs to extend in order to service and manage your apps that run on Kubernetes. Think of Operators as the runtime that manages this type of app on Kubernetes.
 
@@ -37,9 +37,9 @@ metadata:
   name: jaeger-operator-in-myproject
   namespace: myproject
 subjects:
-- kind: ServiceAccount
-  name: jaeger-operator
-  namespace: observability
+  - kind: ServiceAccount
+    name: jaeger-operator
+    namespace: observability
 roleRef:
   kind: Role
   name: jaeger-operator
@@ -55,6 +55,7 @@ Make sure your `kubectl` command is properly configured to talk to a valid Kuber
 {{< /info >}}
 
 To install the operator, run:
+
 ```bash
 kubectl create namespace observability # <1>
 kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing.io_jaegers_crd.yaml # <2>
@@ -63,11 +64,13 @@ kubectl create -n observability -f https://raw.githubusercontent.com/jaegertraci
 kubectl create -n observability -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
 kubectl create -n observability -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
 ```
+
 <1> This creates the namespace used by default in the deployment files. If you want to install the Jaeger operator in a different namespace, you must edit the deployment files to change `observability` to the desired namespace value.
 
 <2> This installs the "Custom Resource Definition" for the `apiVersion: jaegertracing.io/v1`
 
 The operator will activate extra features if given cluster-wide permissions. To enable that, run:
+
 ```
 kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/cluster_role.yaml
 kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/cluster_role_binding.yaml
@@ -75,7 +78,7 @@ kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operato
 
 Note that you'll need to download and customize the `cluster_role_binding.yaml` if you are using a namespace other than `observability`. You probably also want to download and customize the `operator.yaml`, setting the env var `WATCH_NAMESPACES` to have an empty value, so that it can watch for instances across all namespaces.
 
-At this point, there should be a `jaeger-operator` deployment available.  You can view it by running the following command:
+At this point, there should be a `jaeger-operator` deployment available. You can view it by running the following command:
 
 ```bash
 $ kubectl get deployment jaeger-operator -n observability
@@ -102,11 +105,13 @@ oc create -n observability -f https://raw.githubusercontent.com/jaegertracing/ja
 oc create -n observability -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
 oc create -n observability -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
 ```
+
 <1> This creates the namespace used by default in the deployment files. If you want to install the Jaeger operator in a different namespace, you must edit the deployment files to change `observability` to the desired namespace value.
 
 <2> This installs the "Custom Resource Definition" for the `apiVersion: jaegertracing.io/v1`
 
 The operator will activate extra features if given cluster-wide permissions. To enable that, run:
+
 ```
 oc create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/cluster_role.yaml
 oc create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/cluster_role_binding.yaml
@@ -127,7 +132,7 @@ After the role is granted, switch back to a non-privileged user.
 
 # Quick Start - Deploying the AllInOne image
 
-The simplest possible way to create a Jaeger instance is by creating a YAML file like the following example.  This will install the default AllInOne strategy, which deploys the "all-in-one" image (agent, collector, query, ingestor, Jaeger UI) in a single pod, using in-memory storage by default.
+The simplest possible way to create a Jaeger instance is by creating a YAML file like the following example. This will install the default AllInOne strategy, which deploys the "all-in-one" image (agent, collector, query, ingestor, Jaeger UI) in a single pod, using in-memory storage by default.
 
 {{< info >}}
 This default strategy is intended for development, testing, and demo purposes, not for production.
@@ -141,6 +146,7 @@ metadata:
 ```
 
 The YAML file can then be used with `kubectl`:
+
 <!-- TODO - Add OKD commands and tabs shortcode. -->
 
 ```bash
@@ -155,8 +161,7 @@ NAME        CREATED AT
 simplest    28s
 ```
 
-To get the pod name, query for the pods belonging to the `simplest` Jaeger  instance:
-
+To get the pod name, query for the pods belonging to the `simplest` Jaeger instance:
 
 ```bash
 $ kubectl get pods -l app.kubernetes.io/instance=simplest
@@ -199,6 +204,7 @@ $ podman run jaegertracing/jaeger-operator:master start --help
 ## Examples
 
 Setting the `log-level` parameter via flag of a given Jaeger Operator deployment (excerpt):
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -208,12 +214,13 @@ spec:
   template:
     spec:
       containers:
-      - name: jaeger-operator
-        image: jaegertracing/jaeger-operator:master
-        args: ["start", "--log-level=debug"]
+        - name: jaeger-operator
+          image: jaegertracing/jaeger-operator:master
+          args: ["start", "--log-level=debug"]
 ```
 
 Setting the `log-level` parameter via environment variable on a given Jaeger Operator deployment (excerpt):
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -223,15 +230,16 @@ spec:
   template:
     spec:
       containers:
-      - name: jaeger-operator
-        image: jaegertracing/jaeger-operator:master
-        args: ["start"]
-        env:
-        - name: LOG-LEVEL
-          value: debug
+        - name: jaeger-operator
+          image: jaegertracing/jaeger-operator:master
+          args: ["start"]
+          env:
+            - name: LOG-LEVEL
+              value: debug
 ```
 
 Setting the `log-level` parameter in the configuration file:
+
 ```yaml
 log-level: debug
 ```
@@ -240,7 +248,7 @@ To use a configuration file, either create a file at `${HOME}/.jaeger-operator.y
 
 # Deployment Strategies
 
-When you create a Jaeger instance, it is associated with a strategy.  The strategy is defined in the custom resource file, and determines the architecture to be used for the Jaeger backend.  The default strategy is `allInOne`. The other possible values are `production` and `streaming`.
+When you create a Jaeger instance, it is associated with a strategy. The strategy is defined in the custom resource file, and determines the architecture to be used for the Jaeger backend. The default strategy is `allInOne`. The other possible values are `production` and `streaming`.
 
 The available strategies are described in the following sections.
 
@@ -278,11 +286,11 @@ The query and collector services are configured with a supported storage type - 
 The main additional requirement is to provide the details of the storage type and options, for example:
 
 ```yaml
-    storage:
-      type: elasticsearch
-      options:
-        es:
-          server-urls: http://elasticsearch:9200
+storage:
+  type: elasticsearch
+  options:
+    es:
+      server-urls: http://elasticsearch:9200
 ```
 
 ## Streaming strategy
@@ -343,6 +351,7 @@ spec:
       es:
         server-urls: http://elasticsearch:9200
 ```
+
 <1> Identifies the Kafka configuration used by the collector, to produce the messages, and the ingester to consume the messages.
 
 <2> The deadlock interval is disabled by default (set to 0), to avoid the ingester being terminated when no messages arrive, but can be configured to specify the number of minutes to wait for a message before terminating.
@@ -366,7 +375,7 @@ spec:
         server-urls: http://elasticsearch.default.svc:9200
 ```
 
-The self-provision of a Kafka cluster can be disabled by setting the flag `--kafka-provision` to `false`. The default value is `auto`, which will make the Jaeger Operator query the Kubernetes cluster for its ability to handle a `Kafka` custom resource. This is usually set by the Kafka Operator during its installation process, so, if the Kafka Operator is expected to run *after* the Jaeger Operator, the flag can be set to `true`.
+The self-provision of a Kafka cluster can be disabled by setting the flag `--kafka-provision` to `false`. The default value is `auto`, which will make the Jaeger Operator query the Kubernetes cluster for its ability to handle a `Kafka` custom resource. This is usually set by the Kafka Operator during its installation process, so, if the Kafka Operator is expected to run _after_ the Jaeger Operator, the flag can be set to `true`.
 
 # Understanding Custom Resource Definitions
 
@@ -461,6 +470,7 @@ spec:
     cassandraCreateSchema:
       enabled: false # <1>
 ```
+
 <1> Defaults to `true`
 
 Further aspects of the batch job can be configured as well. An example with all the possible options is shown below:
@@ -482,6 +492,7 @@ spec:
       datacenter: "datacenter3"
       mode: "test"
 ```
+
 <1> The same works for `production` and `streaming`.
 
 <2> These options are for the regular Jaeger components, like `collector` and `query`.
@@ -577,6 +588,7 @@ spec:
           memory: 4Gi
       redundancyPolicy: ZeroRedundancy # <4>
 ```
+
 <1> Number of Elasticsearch nodes. For high availability use at least 3 nodes. Do not use 2 nodes as "split brain" problem can happen.
 
 <2> Persistent storage configuration. In this case AWS `gp2` with `5Gi` size. When omitted `emptyDir` is used. Elasticsearch operator provisions `PersistentVolumeClaim` and `PersistentVolume` which are not removed with Jaeger instance. The same volumes can be mounted if Jaeger with the same name and namespace is crated. Some storages might fail in `default` namespace because of OpenShift SCC policy.
@@ -585,12 +597,12 @@ spec:
 
 <4> Data replication policy defines how Elasticsearch shards are replicated across data nodes in the cluster. If not specified Jaeger Operator automatically determines the most appropriate replication based on number of nodes.
 
-* `FullRedundancy` Elasticsearch fully replicates the primary shards for each index to every data node. This provides the highest safety, but at the cost of the highest amount of disk required and the poorest performance.
-* `MultipleRedundancy` Elasticsearch fully replicates the primary shards for each index to half of the data nodes. This provides a good tradeoff between safety and performance.
-* `SingleRedundancy` Elasticsearch makes one copy of the primary shards for each index. Data are always available and recoverable as long as at least two data nodes exist. Better performance than MultipleRedundancy, when using 5 or more nodes. You cannot apply this policy on deployments of single Elasticsearch node.
-* `ZeroRedundancy` Elasticsearch does not make copies of the primary shards. Data might be unavailable or lost in the event a node is down or fails. Use this mode when you are more concerned with performance than safety, or have implemented your own disk/PVC backup/restore strategy.
+- `FullRedundancy` Elasticsearch fully replicates the primary shards for each index to every data node. This provides the highest safety, but at the cost of the highest amount of disk required and the poorest performance.
+- `MultipleRedundancy` Elasticsearch fully replicates the primary shards for each index to half of the data nodes. This provides a good tradeoff between safety and performance.
+- `SingleRedundancy` Elasticsearch makes one copy of the primary shards for each index. Data are always available and recoverable as long as at least two data nodes exist. Better performance than MultipleRedundancy, when using 5 or more nodes. You cannot apply this policy on deployments of single Elasticsearch node.
+- `ZeroRedundancy` Elasticsearch does not make copies of the primary shards. Data might be unavailable or lost in the event a node is down or fails. Use this mode when you are more concerned with performance than safety, or have implemented your own disk/PVC backup/restore strategy.
 
-The self-provision of an Elasticsearch cluster can be disabled by setting the flag `--es-provision` to `false`. The default value is `auto`, which will make the Jaeger Operator query the Kubernetes cluster for its ability to handle a `Elasticsearch` custom resource. This is usually set by the Elasticsearch Operator during its installation process, so, if the Elasticsearch Operator is expected to run *after* the Jaeger Operator, the flag can be set to `true`.
+The self-provision of an Elasticsearch cluster can be disabled by setting the flag `--es-provision` to `false`. The default value is `auto`, which will make the Jaeger Operator query the Kubernetes cluster for its ability to handle a `Elasticsearch` custom resource. This is usually set by the Elasticsearch Operator during its installation process, so, if the Elasticsearch Operator is expected to run _after_ the Jaeger Operator, the flag can be set to `true`.
 
 {{< danger >}}
 At the moment there can be only one Jaeger with self-provisioned Elasticsearch instance per namespace.
@@ -676,7 +688,7 @@ For other controller types, please see [Manually Defining Jaeger Agent Sidecars]
 Support for auto-injecting other controller types is being tracked with [Issue #750](https://github.com/jaegertracing/jaeger-operator/issues/750).
 {{< /warning >}}
 
-The operator can inject Jaeger Agent sidecars in `Deployment` workloads, provided that the deployment or its namespace has the annotation `sidecar.jaegertracing.io/inject` with a suitable value. The values can be either `"true"` (as string), or the Jaeger instance name, as returned by `kubectl get jaegers`. When `"true"` is used, there should be exactly *one* Jaeger instance for the same namespace as the deployment, otherwise, the operator can't figure out automatically which Jaeger instance to use. A specific Jaeger instance name on a deployment has a higher precedence than `true` applied on its namespace.
+The operator can inject Jaeger Agent sidecars in `Deployment` workloads, provided that the deployment or its namespace has the annotation `sidecar.jaegertracing.io/inject` with a suitable value. The values can be either `"true"` (as string), or the Jaeger instance name, as returned by `kubectl get jaegers`. When `"true"` is used, there should be exactly _one_ Jaeger instance for the same namespace as the deployment, otherwise, the operator can't figure out automatically which Jaeger instance to use. A specific Jaeger instance name on a deployment has a higher precedence than `true` applied on its namespace.
 
 The following snippet shows a simple application that will get a sidecar injected, with the Jaeger Agent pointing to the single Jaeger instance available in the same namespace:
 
@@ -697,9 +709,10 @@ spec:
         app: myapp
     spec:
       containers:
-      - name: myapp
-        image: acme/myapp:myversion
+        - name: myapp
+          image: acme/myapp:myversion
 ```
+
 <1> Either `"true"` (as string) or the Jaeger instance name.
 
 A complete sample deployment is available at [`deploy/examples/business-application-injected-sidecar.yaml`](https://github.com/jaegertracing/jaeger-operator/blob/master/deploy/examples/business-application-injected-sidecar.yaml).
@@ -756,7 +769,7 @@ spec:
 ```
 
 {{< danger >}}
-If you attempt to install two Jaeger instances on the same cluster with `DaemonSet` as the strategy, only *one* will end up deploying a `DaemonSet`, as the agent is required to bind to well-known ports on the node. Because of that, the second daemon set will fail to bind to those ports.
+If you attempt to install two Jaeger instances on the same cluster with `DaemonSet` as the strategy, only _one_ will end up deploying a `DaemonSet`, as the agent is required to bind to well-known ports on the node. Because of that, the second daemon set will fail to bind to those ports.
 {{< /danger >}}
 
 Your tracer client will then most likely need to be told where the agent is located. This is usually done by setting the environment variable `JAEGER_AGENT_HOST` to the value of the Kubernetes node's IP, for example:
@@ -776,13 +789,13 @@ spec:
         app: myapp
     spec:
       containers:
-      - name: myapp
-        image: acme/myapp:myversion
-        env:
-        - name: JAEGER_AGENT_HOST
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
+        - name: myapp
+          image: acme/myapp:myversion
+          env:
+            - name: JAEGER_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
 ```
 
 ### OpenShift
@@ -796,6 +809,7 @@ oc create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/mas
 oc adm policy add-scc-to-user daemonset-with-hostport -z jaeger-agent-daemonset # <3>
 oc apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/examples/openshift/agent-as-daemonset.yaml # <4>
 ```
+
 <1> The `SecurityContextConstraints` with the `allowHostPorts` policy
 
 <2> The `ServiceAccount` to be used by the Jaeger Agent
@@ -822,12 +836,12 @@ The Operator supports passing secrets to the Collector, Query and All-In-One dep
 The secrets are available as environment variables in the (Collector/Query/All-In-One) nodes.
 
 ```yaml
-    storage:
-      type: elasticsearch
-      options:
-        es:
-          server-urls: http://elasticsearch:9200
-      secretName: jaeger-secrets
+storage:
+  type: elasticsearch
+  options:
+    es:
+      server-urls: http://elasticsearch:9200
+  secretName: jaeger-secrets
 ```
 
 The secret itself would be managed outside of the `jaeger-operator` custom resource.
@@ -839,22 +853,22 @@ Information on various configuration options for the UI can be found [here](../f
 To apply UI configuration changes within the Custom Resource, the same information can be included in yaml format as shown below:
 
 ```yaml
-    ui:
-      options:
-        dependencies:
-          menuEnabled: false
-        tracking:
-          gaID: UA-000000-2
-        menu:
-        - label: "About Jaeger"
-          items:
-            - label: "Documentation"
-              url: "https://www.jaegertracing.io/docs/latest"
-        linkPatterns:
-        - type: "logs"
-          key: "customer_id"
-          url: /search?limit=20&lookback=1h&service=frontend&tags=%7B%22customer_id%22%3A%22#{customer_id}%22%7D
-          text: "Search for other traces for customer_id=#{customer_id}"
+ui:
+  options:
+    dependencies:
+      menuEnabled: false
+    tracking:
+      gaID: UA-000000-2
+    menu:
+      - label: "About Jaeger"
+        items:
+          - label: "Documentation"
+            url: "https://www.jaegertracing.io/docs/latest"
+    linkPatterns:
+      - type: "logs"
+        key: "customer_id"
+        url: /search?limit=20&lookback=1h&service=frontend&tags=%7B%22customer_id%22%3A%22#{customer_id}%22%7D
+        text: "Search for other traces for customer_id=#{customer_id}"
 ```
 
 ## Defining Sampling Strategies
@@ -889,23 +903,23 @@ The custom resource can be used to define finer grained Kubernetes configuration
 
 When a common definition (for all Jaeger components) is required, it is defined under the `spec` node. When the definition relates to an individual component, it is placed under the `spec/<component>` node.
 
-The types of supported configuration  include:
+The types of supported configuration include:
 
-* [affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) to determine which nodes a pod can be allocated to
+- [affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) to determine which nodes a pod can be allocated to
 
-* [annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/)
+- [annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/)
 
-* [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
+- [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
 
-* [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container) to limit cpu and memory
+- [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container) to limit cpu and memory
 
-* [tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) in conjunction with `taints` to enable pods to avoid being repelled from a node
+- [tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) in conjunction with `taints` to enable pods to avoid being repelled from a node
 
-* [volumes](https://kubernetes.io/docs/concepts/storage/volumes/) and volume mounts
+- [volumes](https://kubernetes.io/docs/concepts/storage/volumes/) and volume mounts
 
-* [serviceAccount](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) to run each component with separate identity
+- [serviceAccount](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) to run each component with separate identity
 
-* [securityContext](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to define privileges of running components
+- [securityContext](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) to define privileges of running components
 
 ```yaml
 apiVersion: jaegertracing.io/v1
@@ -934,20 +948,20 @@ spec:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/e2e-az-name
-            operator: In
-            values:
-            - e2e-az1
-            - e2e-az2
+          - matchExpressions:
+              - key: kubernetes.io/e2e-az-name
+                operator: In
+                values:
+                  - e2e-az1
+                  - e2e-az2
       preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 1
-        preference:
-          matchExpressions:
-          - key: another-node-label-key
-            operator: In
-            values:
-            - another-node-label-value
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: another-node-label-key
+                operator: In
+                values:
+                  - another-node-label-value
   tolerations:
     - key: "key1"
       operator: "Equal"
@@ -973,12 +987,13 @@ spec:
 ```
 
 # Accessing the Jaeger Console (UI)
+
 <!-- TODO Add tabs shortcode -->
 
 ## Kubernetes
 
 The operator creates a Kubernetes [`ingress`](https://kubernetes.io/docs/concepts/services-networking/ingress/) route, which is the Kubernetes' standard for exposing a service to the outside world, but by default it does not come with Ingress providers.
-Check the [Kubernetes documentation](https://kubernetes.github.io/ingress-nginx/deploy/#verify-installation) for the most appropriate way to achieve an Ingress provider for your platform.  The following command enables the Ingress provider on `minikube`:
+Check the [Kubernetes documentation](https://kubernetes.github.io/ingress-nginx/deploy/#verify-installation) for the most appropriate way to achieve an Ingress provider for your platform. The following command enables the Ingress provider on `minikube`:
 
 ```bash
 minikube addons enable ingress
@@ -1053,9 +1068,9 @@ metadata:
   name: jaeger-operator-with-auth-delegator
   namespace: observability
 subjects:
-- kind: ServiceAccount
-  name: jaeger-operator
-  namespace: observability
+  - kind: ServiceAccount
+    name: jaeger-operator
+    namespace: observability
 roleRef:
   kind: ClusterRole
   name: system:auth-delegator
@@ -1093,12 +1108,12 @@ spec:
       sar: '{"namespace": "default", "resource": "pods", "verb": "get"}'
       htpasswdFile: /usr/local/data/htpasswd
   volumeMounts:
-  - name: htpasswd-volume
-    mountPath: /usr/local/data
+    - name: htpasswd-volume
+      mountPath: /usr/local/data
   volumes:
-  - name: htpasswd-volume
-    secret:
-      secretName: htpasswd
+    - name: htpasswd-volume
+      secret:
+        secretName: htpasswd
 ```
 
 # Upgrading the Operator and its managed instances
@@ -1120,6 +1135,7 @@ Simpler changes such as changing the replica sizes can be applied without much c
 While changing the backing storage is supported, migration of the data is not.
 
 # Removing a Jaeger instance
+
 <!-- TODO Add OKD/OpenShift commands and tabs shortcode-->
 
 To remove an instance, use the `delete` command with the custom resource file used when you created the instance:
@@ -1143,24 +1159,25 @@ Deleting the instance will not remove the data from any permanent storage used w
 Starting from version 1.16.0, the Jaeger Operator is able to generate spans related to its own operations. To take advantage of that, the `operator.yaml` has to be configured to enable tracing by setting the flag `--tracing-enabled=true` to the `args` of the container and to add a Jaeger Agent as sidecar to the pod. Here's an excerpt from an `operator.yaml` that has tracing enabled and assumes that the Jaeger instance is at the same namespace as the Jaeger Operator:
 
 ```yaml
-...
-        # .Spec.Template.Spec.Containers[0].Args
-        args: ["start", "--tracing-enabled=true"]
-...
-      # add as a second container to .Spec.Template.Spec.Containers
-      - name: jaeger-agent
-        image: jaegertracing/jaeger-agent:latest # it's best to keep this version in sync with the operator's
-        env:
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        args:
-        - --reporter.grpc.host-port=dns:///jaeger-collector-headless.$(POD_NAMESPACE).svc.cluster.local:14250
-        ports:
-        - containerPort: 6831
-          name: jg-compact-trft
-          protocol: UDP
+
+---
+# .Spec.Template.Spec.Containers[0].Args
+args: ["start", "--tracing-enabled=true"]
+---
+# add as a second container to .Spec.Template.Spec.Containers
+- name: jaeger-agent
+  image: jaegertracing/jaeger-agent:latest # it's best to keep this version in sync with the operator's
+  env:
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+  args:
+    - --reporter.grpc.host-port=dns:///jaeger-collector-headless.$(POD_NAMESPACE).svc.cluster.local:14250
+  ports:
+    - containerPort: 6831
+      name: jg-compact-trft
+      protocol: UDP
 ```
 
 Note that you must also manually provision the Jaeger instance. You can do this after the Jaeger Operator has been initialized. The Jaeger Agent will keep the Operator spans in the internal buffer until it makes a connection to the Jaeger instance. The following Jaeger CR can be used to provision a Jaeger instance suitable for non-production purposes:
@@ -1175,8 +1192,8 @@ metadata:
 The Jaeger Operator also provides extensive logging when the flag `--log-level` is set to `debug`. Here's an excerpt from an `operator.yaml` that has the logging level set to debug:
 
 ```yaml
-        # .Spec.Template.Spec.Containers[0].Args
-        args: ["start", "--log-level=debug"]
+# .Spec.Template.Spec.Containers[0].Args
+args: ["start", "--log-level=debug"]
 ```
 
 Note that tracing and logging at debug level can be both enabled at the same time.
@@ -1236,6 +1253,7 @@ The Jaeger Operator does not yet publish its own metrics. Rather, it makes avail
 {{< /info >}}
 
 # Uninstalling the operator
+
 <!-- TODO Add OKD/OpenShift commands and tabs shortcode -->
 
 To uninstall the operator, run the following commands:

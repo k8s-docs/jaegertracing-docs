@@ -1,11 +1,11 @@
 ---
-title: Download Jaeger
+title: 下载 Jaeger
 ---
 
-Jaeger components can be downloaded in two ways:
+Jaeger 组件可以以两种方式下载:
 
-* As [executable binaries](#binaries)
-* As [Docker images](#docker-images)
+- As [executable binaries](#binaries)
+- As [Docker images](#docker-images)
 
 ## Binaries
 

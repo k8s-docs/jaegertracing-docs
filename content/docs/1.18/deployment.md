@@ -1,43 +1,43 @@
 ---
-title: Deployment
+title: 部署
 weight: 4
 children:
-- title: OpenTelemetry
-  url: opentelemetry
-- title: Operator for Kubernetes
-  navtitle: Kubernetes
-  url: operator
-- title: Frontend/UI
-  url: frontend-ui
-- title: CLI Flags
-  url: cli
-- title: Security
-  url: security
-- title: On Windows
-  url: windows
+  - title: OpenTelemetry
+    url: opentelemetry
+  - title: Operator for Kubernetes
+    navtitle: Kubernetes
+    url: operator
+  - title: Frontend/UI
+    url: frontend-ui
+  - title: CLI Flags
+    url: cli
+  - title: Security
+    url: security
+  - title: On Windows
+    url: windows
 ---
 
 The main Jaeger backend components are released as Docker images on Docker Hub:
 
-Component             | Repository
---------------------- | ---
-**jaeger-agent**      | [hub.docker.com/r/jaegertracing/jaeger-agent/](https://hub.docker.com/r/jaegertracing/jaeger-agent/)
-**jaeger-collector**  | [hub.docker.com/r/jaegertracing/jaeger-collector/](https://hub.docker.com/r/jaegertracing/jaeger-collector/)
-**jaeger-query**      | [hub.docker.com/r/jaegertracing/jaeger-query/](https://hub.docker.com/r/jaegertracing/jaeger-query/)
-**jaeger-ingester**   | [hub.docker.com/r/jaegertracing/jaeger-ingester/](https://hub.docker.com/r/jaegertracing/jaeger-ingester/)
+| Component            | Repository                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **jaeger-agent**     | [hub.docker.com/r/jaegertracing/jaeger-agent/](https://hub.docker.com/r/jaegertracing/jaeger-agent/)         |
+| **jaeger-collector** | [hub.docker.com/r/jaegertracing/jaeger-collector/](https://hub.docker.com/r/jaegertracing/jaeger-collector/) |
+| **jaeger-query**     | [hub.docker.com/r/jaegertracing/jaeger-query/](https://hub.docker.com/r/jaegertracing/jaeger-query/)         |
+| **jaeger-ingester**  | [hub.docker.com/r/jaegertracing/jaeger-ingester/](https://hub.docker.com/r/jaegertracing/jaeger-ingester/)   |
 
 There are orchestration templates for running Jaeger with:
 
-  * Kubernetes: [github.com/jaegertracing/jaeger-kubernetes](https://github.com/jaegertracing/jaeger-kubernetes),
-  * OpenShift: [github.com/jaegertracing/jaeger-openshift](https://github.com/jaegertracing/jaeger-openshift).
+- Kubernetes: [github.com/jaegertracing/jaeger-kubernetes](https://github.com/jaegertracing/jaeger-kubernetes),
+- OpenShift: [github.com/jaegertracing/jaeger-openshift](https://github.com/jaegertracing/jaeger-openshift).
 
 ## Configuration Options
 
 Jaeger binaries can be configured in a number of ways (in the order of decreasing priority):
 
-  * command line arguments,
-  * environment variables,
-  * configuration files in JSON, TOML, YAML, HCL, or Java properties formats.
+- command line arguments,
+- environment variables,
+- configuration files in JSON, TOML, YAML, HCL, or Java properties formats.
 
 To see the complete list of options, run the binary with `help` command or refer to the [CLI Flags](../cli/) page for more information. Options that are specific to a certain storage backend are only listed if the storage type is selected. For example, to see all available options in the Collector with Cassandra storage:
 
@@ -50,23 +50,23 @@ $ docker run --rm \
 
 In order to provide configuration parameters via environment variables, find the respective command line option and convert its name to UPPER_SNAKE_CASE, for example:
 
-Command line option                | Environment variable
------------------------------------|-------------------------------
-`--cassandra.connections-per-host` | `CASSANDRA_CONNECTIONS_PER_HOST`
-`--metrics-backend`                | `METRICS_BACKEND`
+| Command line option                | Environment variable             |
+| ---------------------------------- | -------------------------------- |
+| `--cassandra.connections-per-host` | `CASSANDRA_CONNECTIONS_PER_HOST` |
+| `--metrics-backend`                | `METRICS_BACKEND`                |
 
 ## Agent
 
 Jaeger client libraries expect **jaeger-agent** process to run locally on each host.
 The agent exposes the following ports:
 
-Port  | Protocol | Function
------ | -------  | ---
-6831  | UDP      | accept [jaeger.thrift][jaeger-thrift] in `compact` Thrift protocol used by most current Jaeger clients
-6832  | UDP      | accept [jaeger.thrift][jaeger-thrift] in `binary` Thrift protocol used by Node.js Jaeger client (because [thriftrw][thriftrw] npm package does not support `compact` protocol)
-5778  | HTTP     | serve configs, sampling strategies
-5775  | UDP      | accept [zipkin.thrift][zipkin-thrift] in `compact` Thrift protocol (deprecated; only used by very old Jaeger clients, circa 2016)
-14271 | HTTP     | admin port: health check at `/` and metrics at `/metrics`
+| Port  | Protocol | Function                                                                                                                                                                       |
+| ----- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 6831  | UDP      | accept [jaeger.thrift][jaeger-thrift] in `compact` Thrift protocol used by most current Jaeger clients                                                                         |
+| 6832  | UDP      | accept [jaeger.thrift][jaeger-thrift] in `binary` Thrift protocol used by Node.js Jaeger client (because [thriftrw][thriftrw] npm package does not support `compact` protocol) |
+| 5778  | HTTP     | serve configs, sampling strategies                                                                                                                                             |
+| 5775  | UDP      | accept [zipkin.thrift][zipkin-thrift] in `compact` Thrift protocol (deprecated; only used by very old Jaeger clients, circa 2016)                                              |
+| 14271 | HTTP     | admin port: health check at `/` and metrics at `/metrics`                                                                                                                      |
 
 It can be executed directly on the host or via Docker, as follows:
 
@@ -102,9 +102,9 @@ docker run \
 
 When using gRPC, you have several options for load balancing and name resolution:
 
-* Single connection and no load balancing. This is the default if you specify a single `host:port`. (example: `--reporter.grpc.host-port=jaeger-collector.jaeger-infra.svc:14250`)
-* Static list of hostnames and round-robin load balancing. This is what you get with a comma-separated list of addresses. (example: `reporter.grpc.host-port=jaeger-collector1:14250,jaeger-collector2:14250,jaeger-collector3:14250`)
-* Dynamic DNS resolution and round-robin load balancing. To get this behaviour, prefix the address with `dns:///` and gRPC will attempt to resolve the hostname using SRV records (for [external load balancing](https://github.com/grpc/grpc/blob/master/doc/load-balancing.md)), TXT records (for [service configs](https://github.com/grpc/grpc/blob/master/doc/service_config.md)), and A records. Refer to the [gRPC Name Resolution docs](https://github.com/grpc/grpc/blob/master/doc/naming.md) and the [dns_resolver.go implementation](https://github.com/grpc/grpc-go/blob/master/resolver/dns/dns_resolver.go) for more info. (example: `--reporter.grpc.host-port=dns:///jaeger-collector.jaeger-infra.svc:14250`)
+- Single connection and no load balancing. This is the default if you specify a single `host:port`. (example: `--reporter.grpc.host-port=jaeger-collector.jaeger-infra.svc:14250`)
+- Static list of hostnames and round-robin load balancing. This is what you get with a comma-separated list of addresses. (example: `reporter.grpc.host-port=jaeger-collector1:14250,jaeger-collector2:14250,jaeger-collector3:14250`)
+- Dynamic DNS resolution and round-robin load balancing. To get this behaviour, prefix the address with `dns:///` and gRPC will attempt to resolve the hostname using SRV records (for [external load balancing](https://github.com/grpc/grpc/blob/master/doc/load-balancing.md)), TXT records (for [service configs](https://github.com/grpc/grpc/blob/master/doc/service_config.md)), and A records. Refer to the [gRPC Name Resolution docs](https://github.com/grpc/grpc/blob/master/doc/naming.md) and the [dns_resolver.go implementation](https://github.com/grpc/grpc-go/blob/master/resolver/dns/dns_resolver.go) for more info. (example: `--reporter.grpc.host-port=dns:///jaeger-collector.jaeger-infra.svc:14250`)
 
 ### Agent level tags
 
@@ -129,13 +129,12 @@ docker run -it --rm jaegertracing/jaeger-collector:{{< currentVersion >}} -h
 
 At default settings the collector exposes the following ports:
 
-Port  | Protocol | Function
------ | -------  | ---
-14250 | gRPC     | used by **jaeger-agent** to send spans in model.proto format
-14268 | HTTP     | can accept spans directly from clients in jaeger.thrift format over binary thrift protocol
-9411  | HTTP     | can accept Zipkin spans in Thrift, JSON and Proto (disabled by default)
-14269 | HTTP     | admin port: health check at `/` and metrics at `/metrics`
-
+| Port  | Protocol | Function                                                                                   |
+| ----- | -------- | ------------------------------------------------------------------------------------------ |
+| 14250 | gRPC     | used by **jaeger-agent** to send spans in model.proto format                               |
+| 14268 | HTTP     | can accept spans directly from clients in jaeger.thrift format over binary thrift protocol |
+| 9411  | HTTP     | can accept Zipkin spans in Thrift, JSON and Proto (disabled by default)                    |
+| 14269 | HTTP     | admin port: health check at `/` and metrics at `/metrics`                                  |
 
 ## Storage Backends
 
@@ -156,6 +155,7 @@ By default, there's no limit in the amount of traces stored in memory but a limi
 integer value via `--memory.max-traces`.
 
 ### Badger - local storage
+
 Experimental since Jaeger 1.9
 
 [Badger](https://github.com/dgraph-io/badger) is an embedded local storage, only available
@@ -174,13 +174,16 @@ docker run \
 ```
 
 ### Cassandra
+
 Supported versions: 3.4+
 
 Deploying Cassandra itself is out of scope for our documentation. One good
 source of documentation is the [Apache Cassandra Docs](https://cassandra.apache.org/doc/latest/).
 
 #### Configuration
+
 ##### Minimal
+
 ```sh
 docker run \
   -e SPAN_STORAGE_TYPE=cassandra \
@@ -189,7 +192,9 @@ docker run \
 ```
 
 ##### All options
+
 To view the full list of configuration options, you can run the following command:
+
 ```sh
 docker run \
   -e SPAN_STORAGE_TYPE=cassandra  \
@@ -254,6 +259,7 @@ usercert = ~/.cassandra/client-cert
 ```
 
 ### Elasticsearch
+
 Supported in Jaeger since 0.6.0
 Supported versions: 5.x, 6.x, 7.x
 
@@ -266,7 +272,9 @@ Elasticsearch does not require initialization other than
 Once it is running, pass the correct configuration values to the Jaeger collector and query service.
 
 #### Configuration
+
 ##### Minimal
+
 ```sh
 docker run \
   -e SPAN_STORAGE_TYPE=elasticsearch \
@@ -275,7 +283,9 @@ docker run \
 ```
 
 ##### All options
+
 To view the full list of configuration options, you can run the following command:
+
 ```sh
 docker run \
   -e SPAN_STORAGE_TYPE=elasticsearch \
@@ -297,9 +307,9 @@ Jaeger by default stores data in daily indices which might not optimally utilize
 
 Rollover lets you configure when to roll over to a new index based on one or more of the following criteria:
 
-* `max_age` - the maximum age of the index. It uses [time units](https://www.elastic.co/guide/en/elasticsearch/reference/master/common-options.html#time-units): `d`, `h`, `m`.
-* `max_docs` - the maximum documents in the index.
-* `max_size` - the maximum estimated size of primary shards (since Elasticsearch 6.x). It uses [byte size units](https://www.elastic.co/guide/en/elasticsearch/reference/master/common-options.html#byte-units) `tb`, `gb`, `mb`.
+- `max_age` - the maximum age of the index. It uses [time units](https://www.elastic.co/guide/en/elasticsearch/reference/master/common-options.html#time-units): `d`, `h`, `m`.
+- `max_docs` - the maximum documents in the index.
+- `max_size` - the maximum estimated size of primary shards (since Elasticsearch 6.x). It uses [byte size units](https://www.elastic.co/guide/en/elasticsearch/reference/master/common-options.html#byte-units) `tb`, `gb`, `mb`.
 
 Rollover index management strategy is more complex than using the default daily indices and it requires an initialisation job to prepare the storage and two cron jobs to manage indices.
 
@@ -365,57 +375,58 @@ without waiting until indices created by Elasticsearch 5 are removed.
 
 1. Reindex all span indices to new indices with suffix `-1`:
 
-    ```bash
-    curl -ivX POST -H "Content-Type: application/json" http://localhost:9200/_reindex -d @reindex.json
-    {
-      "source": {
-        "index": "jaeger-span-*"
-      },
-      "dest": {
-        "index": "jaeger-span"
-      },
-      "script": {
-        "lang": "painless",
-        "source": "ctx._index = 'jaeger-span-' + (ctx._index.substring('jaeger-span-'.length(), ctx._index.length())) + '-1'"
-      }
-    }
-    ```
+   ```bash
+   curl -ivX POST -H "Content-Type: application/json" http://localhost:9200/_reindex -d @reindex.json
+   {
+     "source": {
+       "index": "jaeger-span-*"
+     },
+     "dest": {
+       "index": "jaeger-span"
+     },
+     "script": {
+       "lang": "painless",
+       "source": "ctx._index = 'jaeger-span-' + (ctx._index.substring('jaeger-span-'.length(), ctx._index.length())) + '-1'"
+     }
+   }
+   ```
 
 2. Delete indices with old mapping:
 
-    ```bash
-    curl -ivX DELETE -H "Content-Type: application/json" http://localhost:9200/jaeger-span-\*,-\*-1
-    ```
+   ```bash
+   curl -ivX DELETE -H "Content-Type: application/json" http://localhost:9200/jaeger-span-\*,-\*-1
+   ```
 
 3. Create indices without `-1` suffix:
 
-    ```bash
-    curl -ivX POST -H "Content-Type: application/json" http://localhost:9200/_reindex -d @reindex.json
-    {
-      "source": {
-        "index": "jaeger-span-*"
-      },
-      "dest": {
-        "index": "jaeger-span"
-      },
-      "script": {
-        "lang": "painless",
-        "source": "ctx._index = 'jaeger-span-' + (ctx._index.substring('jaeger-span-'.length(), ctx._index.length() - 2))"
-      }
-    }
-    ```
+   ```bash
+   curl -ivX POST -H "Content-Type: application/json" http://localhost:9200/_reindex -d @reindex.json
+   {
+     "source": {
+       "index": "jaeger-span-*"
+     },
+     "dest": {
+       "index": "jaeger-span"
+     },
+     "script": {
+       "lang": "painless",
+       "source": "ctx._index = 'jaeger-span-' + (ctx._index.substring('jaeger-span-'.length(), ctx._index.length() - 2))"
+     }
+   }
+   ```
 
 4. Remove suffixed indices:
 
-    ```bash
-    curl -ivX DELETE -H "Content-Type: application/json" http://localhost:9200/jaeger-span-\*-1
-    ```
+   ```bash
+   curl -ivX DELETE -H "Content-Type: application/json" http://localhost:9200/jaeger-span-\*-1
+   ```
 
 Run the commands analogically for other Jaeger indices.
 
 There might exist more effective migration procedure. Please share with the community any findings.
 
 ### Kafka
+
 Supported in Jaeger since 1.6.0
 Supported Kafka versions: 0.9+
 
@@ -427,7 +438,9 @@ Kafka and store spans in another storage backend (Elasticsearch or Cassandra).
 Writing to Kafka is particularly useful for building post-processing data pipelines.
 
 #### Configuration
+
 ##### Minimal
+
 ```sh
 docker run \
   -e SPAN_STORAGE_TYPE=kafka \
@@ -437,7 +450,9 @@ docker run \
 ```
 
 ##### All options
+
 To view the full list of configuration options, you can run the following command:
+
 ```sh
 docker run \
   -e SPAN_STORAGE_TYPE=kafka \
@@ -446,6 +461,7 @@ docker run \
 ```
 
 #### Topic & partitions
+
 Unless your Kafka cluster is configured to automatically create topics, you will need to create it ahead of time. You can refer to [the Kafka quickstart documentation](https://kafka.apache.org/documentation/#quickstart_createtopic) to learn how.
 
 You can find more information about topics and partitions in general in the [official documentation](https://kafka.apache.org/documentation/#intro_topics). [This article](https://www.confluent.io/blog/how-to-choose-the-number-of-topicspartitions-in-a-kafka-cluster/) provide more details about how to choose the number of partitions.
@@ -456,8 +472,8 @@ Jaeger supports gRPC based storage plugins. For more information refer to [jaege
 
 Available plugins:
 
-* [InfluxDB](https://github.com/influxdata/jaeger-influxdb/)
-* [Logz.io](https://github.com/logzio/jaeger-logzio) - secure, scalable, managed, cloud-based ELK storage.
+- [InfluxDB](https://github.com/influxdata/jaeger-influxdb/)
+- [Logz.io](https://github.com/logzio/jaeger-logzio) - secure, scalable, managed, cloud-based ELK storage.
 
 ```sh
 docker run \
@@ -468,13 +484,15 @@ docker run \
 ```
 
 ## Ingester
+
 **jaeger-ingester** is a service which reads span data from Kafka topic and writes it to another storage backend (Elasticsearch or Cassandra).
 
-Port  | Protocol | Function
------ | -------  | ---
-14270 | HTTP     | admin port: health check at `/` and metrics at `/metrics`
+| Port  | Protocol | Function                                                  |
+| ----- | -------- | --------------------------------------------------------- |
+| 14270 | HTTP     | admin port: health check at `/` and metrics at `/metrics` |
 
 To view all exposed configuration options run the following command:
+
 ```sh
 docker run \
   -e SPAN_STORAGE_TYPE=cassandra \
@@ -489,12 +507,13 @@ The service is stateless and is typically run behind a load balancer, such as [*
 
 At default settings the query service exposes the following port(s):
 
-Port  | Protocol | Function
------ | -------  | ---
-16686 | HTTP     | `/api/*` endpoints and Jaeger UI at `/`
-16687 | HTTP     | admin port: health check at `/` and metrics at `/metrics`
+| Port  | Protocol | Function                                                  |
+| ----- | -------- | --------------------------------------------------------- |
+| 16686 | HTTP     | `/api/*` endpoints and Jaeger UI at `/`                   |
+| 16687 | HTTP     | admin port: health check at `/` and metrics at `/metrics` |
 
 ### Minimal deployment example (Elasticsearch backend):
+
 ```sh
 docker run -d --rm \
   -p 16686:16686 \

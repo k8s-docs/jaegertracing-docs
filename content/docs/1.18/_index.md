@@ -1,70 +1,74 @@
 ---
-title: Introduction
+title: 介绍
 weight: 1
 children:
-- title: Features
-  url: features
+  - title: 特性
+    url: features
 ---
 
-Welcome to Jaeger's documentation portal! Below, you'll find information for beginners and experienced Jaeger users.
+欢迎来到 Jaeger 的文档门户！
+下面，你会发现对于初学者和有经验的 Jaeger 用户信息.
 
-If you can't find what you are looking for, or have an issue not covered here, we'd love to hear from you either on [Gitter chat](https://gitter.im/jaegertracing/Lobby), our [mailing list](https://groups.google.com/forum/#!forum/jaeger-tracing) or [Github](https://github.com/jaegertracing/jaeger/issues).
+如果你不能找到你在找什么, 或在这里没有覆盖的问题, 我们很乐意听取您的意见不管是在[Gitter chat](https://gitter.im/jaegertracing/Lobby), 我们的[邮件列表](https://groups.google.com/forum/#!forum/jaeger-tracing) 要么 [Github](https://github.com/jaegertracing/jaeger/issues).
 
-## About
+## 关于
 
-Jaeger, inspired by [Dapper][dapper] and [OpenZipkin](http://zipkin.io),
-is a distributed tracing system released as open source by [Uber Technologies][ubeross].
-It is used for monitoring and troubleshooting microservices-based distributed systems, including:
+Jaeger, 灵感[Dapper][dapper] 和 [OpenZipkin](http://zipkin.io),
+是一个分布式追踪系统 发布为开放源代码 通过 [Uber 技术][ubeross].
+它用于监控和故障排除微服务为基础的分布式系统, 包含:
 
-* Distributed context propagation
-* Distributed transaction monitoring
-* Root cause analysis
-* Service dependency analysis
-* Performance / latency optimization
+- 分布式环境传播
+- 分布式事务监控
+- 根本原因分析
+- 服务依赖性分析
+- 性能/延迟优化
 
-Uber published a blog post, [Evolving Distributed Tracing at Uber](https://eng.uber.com/distributed-tracing/), where they explain the history and reasons for the architectural choices made in Jaeger. [Yuri Shkuro](https://shkuro.com), creator of Jaeger, also published a book [Mastering Distributed Tracing](https://shkuro.com/books/2019-mastering-distributed-tracing/) that covers in-depth many aspects of Jaeger design and operation, as well as distributed tracing in general.
+Uber 发表博客文章, [在`Uber`不断发展分布式跟踪](https://eng.uber.com/distributed-tracing/), 他们解释为建筑选择的历史原因 在制作 `Jaeger`. [Yuri Shkuro](https://shkuro.com), Jaeger`的`创造者, 还出版了一本书[掌握分布式跟踪](https://shkuro.com/books/2019-mastering-distributed-tracing/) 在深入`Jaeger`设计和操作的许多方面覆盖, 以及分布在一般的跟踪.
 
-## Features
+## 特征
 
-  * [OpenTracing](http://opentracing.io/) compatible data model and instrumentation libraries
-    * in [Go](https://github.com/jaegertracing/jaeger-client-go), [Java](https://github.com/jaegertracing/jaeger-client-java), [Node](https://github.com/jaegertracing/jaeger-client-node), [Python](https://github.com/jaegertracing/jaeger-client-python),
-   [C++](https://github.com/jaegertracing/cpp-client) and [C#](https://github.com/jaegertracing/jaeger-client-csharp)
-  * Uses consistent upfront sampling with individual per service/endpoint probabilities
-  * Multiple storage backends: Cassandra, Elasticsearch, memory.
-  * Adaptive sampling (coming soon)
-  * Post-collection data processing pipeline (coming soon)
+- [OpenTracing](http://opentracing.io/) 兼容的数据模型和仪器库
+  - 在 [Go](https://github.com/jaegertracing/jaeger-client-go), [Java](https://github.com/jaegertracing/jaeger-client-java), [Node](https://github.com/jaegertracing/jaeger-client-node), [Python](https://github.com/jaegertracing/jaeger-client-python),
+    [C++](https://github.com/jaegertracing/cpp-client) 和 [C#](https://github.com/jaegertracing/jaeger-client-csharp)
+- 用途一致前期采样 同 每个服务/端点的概率个人
+- 多个存储后端: Cassandra, Elasticsearch, memory.
+- 自适应采样 (快来了)
+- 后采集的数据处理管道 (快来了)
 
-See [Features](./features/) page for more details.
+有关详细信息，请参见[特点](./features/)页。
 
-## Technical Specs
+## 技术规格
 
-  * Backend components implemented in Go
-  * React/Javascript UI
-  * Supported storage backends:
-    * [Cassandra 3.4+](./deployment/#cassandra)
-    * [Elasticsearch 5.x, 6.x, 7.x](./deployment/#elasticsearch)
-    * [Kafka](./deployment/#kafka)
-    * memory storage
+- 在`Go`实现后端组件
+- React/Javascript UI
+- 支持的存储后端:
+  - [Cassandra 3.4+](./deployment/#cassandra)
+  - [Elasticsearch 5.x, 6.x, 7.x](./deployment/#elasticsearch)
+  - [Kafka](./deployment/#kafka)
+  - 存储器
 
-## Quick Start
-See [running a docker all in one image](getting-started#all-in-one).
+## 快速开始
 
-## Screenshots
+参见[运行`docker`都在同一个镜像](getting-started#all-in-one).
 
-### Traces View
+## 截图
+
+### 痕迹查看
+
 [![Traces View](/img/traces-ss.png)](/img/traces-ss.png)
 
-### Trace Detail View
+### 跟踪详细查看
+
 [![Detail View](/img/trace-detail-ss.png)](/img/trace-detail-ss.png)
 
-## Related links
-- [Evolving Distributed tracing At Uber Engineering](https://eng.uber.com/distributed-tracing/)
-- [Mastering Distributed Tracing](https://shkuro.com/books/2019-mastering-distributed-tracing/)
-- [Tracing HTTP request latency in Go with OpenTracing](https://medium.com/opentracing/tracing-http-request-latency-in-go-with-opentracing-7cc1282a100a)
-- [Distributed Tracing with Jaeger & Prometheus on Kubernetes](https://blog.openshift.com/openshift-commons-briefing-82-distributed-tracing-with-jaeger-prometheus-on-kubernetes/)
-- [Using Jaeger with Istio](https://istio.io/docs/tasks/telemetry/distributed-tracing.html)
-- [Using Jaeger with Envoy](https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/jaeger_tracing.html)
+## 相关链接
+
+- [不断变化的分布式跟踪在`Uber`工程](https://eng.uber.com/distributed-tracing/)
+- [掌握分布式跟踪](https://shkuro.com/books/2019-mastering-distributed-tracing/)
+- [跟踪 HTTP 请求的等待时间在`Go` 与 OpenTracing](https://medium.com/opentracing/tracing-http-request-latency-in-go-with-opentracing-7cc1282a100a)
+- [分布式跟踪 同 Jaeger & Prometheus 上 Kubernetes](https://blog.openshift.com/openshift-commons-briefing-82-distributed-tracing-with-jaeger-prometheus-on-kubernetes/)
+- [运用 Jaeger 同 Istio](https://istio.io/docs/tasks/telemetry/distributed-tracing.html)
+- [运用 Jaeger 同 Envoy](https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/jaeger_tracing.html)
 
 [dapper]: https://research.google.com/pubs/pub36356.html
 [ubeross]: http://uber.github.io
-
